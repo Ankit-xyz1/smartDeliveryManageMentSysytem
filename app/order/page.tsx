@@ -108,6 +108,7 @@ const page = () => {
       }
       if (data.sucess) {
         toast.success("created an order sucessfully")
+        FetchallOrders();
       }
       setloading(false)
     } catch (error) {
