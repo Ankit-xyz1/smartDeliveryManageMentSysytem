@@ -85,7 +85,7 @@ const page = () => {
   const AddOrder = async () => {
     setloading(true)
     const body = {
-      OrderNumber: formData.OrderNumber,
+      orderNumber: formData.OrderNumber,
       name: formData.name,
       phone: formData.phone,
       address: formData.address,
@@ -112,7 +112,7 @@ const page = () => {
       }
       setloading(false)
     } catch (error) {
-      console.log(error);
+      console.log("f",error);
       toast.error("some error occured")
     }
   }
@@ -181,17 +181,6 @@ const page = () => {
               ))}
 
             </>}
-            <div className="IndiVidualPartner w-[100%] h-[6vh] bg-zinc-900 rounded-sm flex p-2">
-              <div className="individualname w-[50%] md:w-[30%] text-white h-full flex items-center justify-start px-1 md:text-sm text-[12px] overflow-hidden">order number</div>
-              <div className="status w-[10%] md:w-[20%] flex gap-1 justify-start items-center">
-                <div className="blinker animate-pulse duration-1000 h-[7px] w-[7px] bg-red-500 rounded-full shadow-2xl"></div>
-                <div className="stat-written hidden md:flex text-white text-sm"> Pending</div>
-              </div>
-              <div className='edit-delete md:w-[47%] w-[35%] flex items-center justify-end gap-2 text-black'>
-                <div><Button variant={'outline'} className='cursor-pointer'><CalendarDays /><span className='md:inline hidden'>date</span></Button></div>
-                <div className="delete"><Button variant={'outline'} className='cursor-pointer'><History /><span className='md:inline hidden'>assignment history</span></Button></div>
-              </div>
-            </div>
           </div>
         </div>
         <div className='line animate-pulse duration-500 hidden md:flex h-screen w-[1px] bg-zinc-800'></div>

@@ -47,7 +47,7 @@ const Navbar = () => {
                     >orders</Link>
                   </li>
                   <li>
-                    <Link href="/partbers" className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 " onClick={() => { setNavOpen(!Navopen) }}
+                    <Link href="/partners" className="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 " onClick={() => { setNavOpen(!Navopen) }}
                     >partners</Link>
                   </li>
                 </ul>
