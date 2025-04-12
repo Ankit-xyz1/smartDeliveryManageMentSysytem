@@ -63,7 +63,7 @@ export type DeliveryPartnerTypeFromDb = {
   
   // Page Props Types
   export type PartnersPageProps = {
-    partners: DeliveryPartnerType[];
+    partners: DeliveryPartnerTypeFromDb[];
     metrics: {
       totalActive: number;
       avgRating: number;

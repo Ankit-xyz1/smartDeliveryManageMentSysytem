@@ -5,7 +5,7 @@ const AssignmentSchema = new Schema({
   orderId: { type: Schema.Types.ObjectId, ref: 'Order' },
   partnerId: { type: Schema.Types.ObjectId, ref: 'DeliveryPartner' },
   timestamp: { type: Date, default: Date.now },
-  status: { type: String, enum: ['success', 'failed'] },
+  status: { type: String },
   reason: String,
 });
 

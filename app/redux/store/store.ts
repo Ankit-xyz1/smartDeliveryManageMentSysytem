@@ -1,10 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import partnersReducer  from '../slice/allPartnersSLice';
-
+import { configureStore } from "@reduxjs/toolkit";
+import partnersReducer from "../slice/allPartnersSLice";
+import ordersReducer from "../slice/allOrdersSlice";
+import assigmentsReducer from "../slice/allAssignmentSlice";
 
 export const store = configureStore({
   reducer: {
-    partners:partnersReducer
+    partners: partnersReducer,
+    orders: ordersReducer,
+    assigments: assigmentsReducer,
   },
 });
 

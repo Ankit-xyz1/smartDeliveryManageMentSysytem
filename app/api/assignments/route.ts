@@ -2,60 +2,62 @@ import Assignment from "@/models/Assignment";
 import DeliveryPartner from "@/models/DeliveryPartner";
 import orderModel from "@/models/orderModel";
 import { connectToDatabase } from "@/utils/db";
+import mongoose from "mongoose";
 
-export async function POST(request: Request) {
-  //coneccting to db
+export async function GET() {
   await connectToDatabase();
-  //parsing body
-  const { orderNumber, customer, area, items, scheduledFor, totalAmount } =
-    await request.json();
-  //checks
-  const ifAlreadyExistOrder = await orderModel.findOne({ orderNumber });
-  if (ifAlreadyExistOrder) {
-    return Response.json({
-      sucess: false,
-      message: "order Already exisit",
-    });
-  }
-
-  //calculating the best partner in the area
-  const partnerID = await calculate_Metrics(area);
-  console.log(partnerID);
-
-  //increasing the partner load
-  let pid:string|null = null;
-  if (partnerID.success) {
-    updatePartnerLoad(partnerID.id);
-    pid = partnerID.id
-  }
-  //saving the assigned oder
-  //if no partnerr found the order will be saved in the DB wating for rescheduling
   try {
-    const newOrder = await orderModel.create({
-      orderNumber,
-      customer,
-      area,
-      items,
-      status: `${partnerID.success ? "assigned" : "pending"}`,
-      scheduledFor,
-      totalAmount,
-      assignedTo: pid,
-    });
-    OrderAssignmentMap(newOrder._id, partnerID.id, newOrder.status);
+    const allAssignMents = await Assignment.find({});
     return Response.json({
       sucess: true,
-      message: "order assigned sucessfully",
-      newOrder,
+      message: "fetched all Parrtners",
+      allAssignMents,
+    });
+  } catch (error) {
+    return Response.json({ sucess: false, message: "error at backend" });
+  }
+}
+
+export async function POST() {
+  await connectToDatabase();
+  try {
+    const allpendingOrders: any[] = await orderModel.find({
+      status: "pending",
+    });
+    console.log(allpendingOrders);
+    for (let i = 0; i < allpendingOrders.length; i++) {
+      const item = allpendingOrders[i];
+      const partnerID = await calculate_Metrics(item.area);
+      let pid: string | null = null;
+      if (!partnerID.success) {
+        continue;
+      }
+      if (partnerID.success) {
+        updatePartnerLoad(partnerID.id);
+        pid = partnerID.id;
+      }
+      const findOrderAndUpdateStatus = await orderModel.findOne({
+        _id: item._id,
+      });
+      if (findOrderAndUpdateStatus) {
+        findOrderAndUpdateStatus.status = "assigned";
+        findOrderAndUpdateStatus.assignedTo = pid;
+        await findOrderAndUpdateStatus.save();
+      }
+      updateAssignment(
+        findOrderAndUpdateStatus._id,
+        findOrderAndUpdateStatus.assignedTo
+      );
+    }
+    return Response.json({
+      sucess: true,
+      message: "assigned orders to free partners in the area",
     });
   } catch (error) {
     console.log(error);
     return Response.json({ sucess: false, message: "error at backend" });
   }
 }
-
-//for calculating best metrices we can select firstly all the delivery partners that are currently active and availabe for that area
-//after filtering out all the partners for that area we can calculate their rating , completedOrders ,cancelledOrders
-//who ever has most rating and completed orders will get the order for delivery but if the dp has a x number of cancelled order the second best candidate will get the order
 
 const calculate_Metrics = async (area: string) => {
   //find the partners for same area
@@ -100,7 +102,6 @@ const calculate_Metrics = async (area: string) => {
   };
 };
 
-//finding the dp in area
 const findDPinArea = async (area: string) => {
   try {
     // Find all DeliveryPartners where the 'areas' array contains the specified 'area'
@@ -134,28 +135,31 @@ const updatePartnerLoad = async (id: string) => {
   }
 };
 
-//updating order map
-type Assignment = {
-  orderId: string;
-  partnerId: string;
-  timestamp: Date;
-  status: "success" | "failed";
-  reason?: string;
-};
+//update assignment
 
-const OrderAssignmentMap = async (
-  orderId: string,
-  partnerId: string | null,
-  status: string
-) => {
+const updateAssignment = async (orderId: string, partnerId: string) => {
   try {
-    const assignmentMap = await Assignment.create({
-      orderId,
-      partnerId,
-      status,
-      reason: partnerId ? "assigned" : "no partner found",
+    // Validate ObjectId before using it
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      console.error("Invalid orderId:", orderId);
+      return;
+    }
+
+    const assignmentToBeUpdated = await Assignment.findOne({
+      orderId: new mongoose.Types.ObjectId(orderId),
     });
+
+    if (!assignmentToBeUpdated) {
+      console.log("Assignment not found for orderId:", orderId);
+      return;
+    }
+
+    assignmentToBeUpdated.partnerId = new mongoose.Types.ObjectId(partnerId);
+    assignmentToBeUpdated.status = "assigned";
+
+    await assignmentToBeUpdated.save();
+    console.log("Assignment updated successfully!");
   } catch (error) {
-    console.log(error);
+    console.error("Error updating assignment:", error);
   }
 };

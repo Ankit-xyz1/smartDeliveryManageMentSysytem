@@ -110,7 +110,7 @@ const page = () => {
   return (
     <>
       <div className='h-screen w-full bg-zinc-950 relative left-0 bottom-0 flex items-center justify-center z-10 '>
-        <div className='absolute h-fit w-fit p-2 top-1.5 left-1 text-white'><Link href={'/partner'}><CircleChevronLeft className='cursor-pointer' /></Link></div>
+        <div className='absolute h-fit w-fit p-2 top-1.5 left-1 text-white'><Link href={'/partners'}><CircleChevronLeft className='cursor-pointer' /></Link></div>
         <Toaster/>
         <div className='lines animate-pulse duration-500  hidden md:flex h-screen w-[1px] bg-zinc-800'></div>
         <div className='h-screen md:w-[60%] w-full bg-zinc-950 p-5 relative  flex flex-col'>

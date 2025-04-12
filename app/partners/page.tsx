@@ -195,7 +195,7 @@ const page = () => {
             <div className="active1 h-full w-[40%] flex items-center justify-center ">
               <div className="status w-full flex gap-1 justify-start items-center">
                 <div className="blinker animate-pulse duration-1000 h-[7px] w-[7px] bg-green-500 rounded-full"></div>
-                <div className="stat-written text-white text-sm h-full w-fit flex">100 Active</div>
+                <div className="stat-written text-white text-sm h-full w-fit flex">{partner.length} availabe partners</div>
               </div>
             </div>
           </div>
@@ -206,7 +206,7 @@ const page = () => {
                   <div className="individualname w-[50%] md:w-[30%] text-white h-full flex items-center justify-start px-1 md:text-sm text-[12px] overflow-hidden">{item.name}</div>
                   <div className="status w-[10%] md:w-[20%] flex gap-1 justify-start items-center">
                     <div className={`blinker animate-pulse duration-1000 h-[7px] w-[7px] ${item.status === 'active' ? "bg-green-500" : "bg-red-500"}  rounded-full shadow-2xl`}></div>
-                    <div className="stat-written hidden md:flex text-white text-sm"> Active</div>
+                    <div className="stat-written hidden md:flex text-white text-sm">{item.status === 'active' ? "Active":"Un Active"}</div>
                   </div>
                   <div className='edit-delete md:w-[47%] w-[35%] flex items-center justify-end gap-2 text-black'>
                     <div><Link href={`/partners/${item._id}`}>
