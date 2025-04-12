@@ -12,7 +12,7 @@ export default function Home() {
             <div className="activeOrders metricsCar w-full h-[46%] bg-emerald-500"></div>
           </div>
           <div className="w-[100%] h-full md:w-[50%] bg-blue-600 p-2">
-              <div className="recentAssignments bg-green-600 h-full w-full"></div>
+            <div className="recentAssignments bg-green-600 h-full w-full"></div>
           </div>
         </div>
         <div className='hidden md:flex h-full w-[1px] bg-zinc-800'></div>

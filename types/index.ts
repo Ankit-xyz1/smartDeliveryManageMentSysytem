@@ -1,5 +1,5 @@
 // Delivery Partner Type
-export type DeliveryPartnerType = {
+export type DeliveryPartnerTypeFromDb = {
     _id?: string;
     name: string;
     email: string;
