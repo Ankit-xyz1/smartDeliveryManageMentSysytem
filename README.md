@@ -1,36 +1,158 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 📦 Smart Delivery Management System
 
-First, run the development server:
+A full-stack web application for smart delivery order management with auto-assignment logic for delivery partners based on real-time metrics.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Live Demo:** [smart-delivery-management-system.vercel.app](https://smart-delivery-manage-ment-sysytem.vercel.app)  
+**GitHub Repo:** [GitHub Link](https://github.com/Ankit-xyz1/smartDeliveryManageMentSysytem)
+
+---
+
+## 📚 Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Folder Structure](#folder-structure)
+- [API Documentation](#api-documentation)
+- [Order Assignment Logic](#order-assignment-logic)
+- [Pages](#pages)
+- [How to Run Locally](#how-to-run-locally)
+- [Deployment](#deployment)
+- [License](#license)
+
+---
+
+## 🧩 Overview
+
+This system provides:
+- Dashboard for monitoring delivery partners and orders
+- Smart order assignment based on partner metrics
+- Partner and order CRUD operations
+- Real-time delivery assignment map
+
+---
+
+## ✅ Features
+
+1. **Partner Management**
+   - Register, edit, and delete partners
+   - Area-based availability
+   - Shift scheduling and load tracking
+
+2. **Order Management**
+   - Add and track orders
+   - Assign orders using metrics
+   - View status and update
+
+3. **Assignment Algorithm**
+   - Assigns order to the most eligible partner
+   - Factors in rating, completed orders, and cancelled orders
+   - Fallback to second-best partner if cancellation rate is high
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Next.js (TypeScript), Tailwind CSS
+- **Backend:** Next.js API Routes, MongoDB (via Mongoose)
+- **Database:** MongoDB Atlas
+- **Deployment:** Vercel
+
+---
+
+## 📁 Folder Structure
+
+```
+/pages
+  /api
+    /partners
+    /order
+    /assignments
+  /orders.tsx
+  /partners.tsx
+  /assignments.tsx
+  /index.tsx
+/models
+/utils
+/components
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📡 API Documentation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🧑 Partner Routes
+| Method | Route                        | Description              |
+|--------|-----------------------------|--------------------------|
+| GET    | `/api/partners/getPartner`   | Fetch all partners       |
+| GET    | `/api/partners/getAPartner`  | Fetch a specific partner |
+| POST   | `/api/partners/addPartner`   | Add a new partner        |
+| PUT    | `/api/partners/editPartner`  | Edit partner details     |
+| DELETE | `/api/partners/deletePartner`| Delete a partner         |
 
-## Learn More
+### 📦 Order Routes
+| Method | Route                        | Description                           |
+|--------|-----------------------------|---------------------------------------|
+| POST   | `/api/order/assignOrder`     | Assign new order (core algorithm)     |
+| GET    | `/api/order/getOrder`        | Get all orders                        |
 
-To learn more about Next.js, take a look at the following resources:
+### 🔄 Assignment Routes
+| Method | Route                        | Description                             |
+|--------|-----------------------------|-----------------------------------------|
+| GET    | `/api/assignments`           | Get all assignment records              |
+| POST   | `/api/assignments`           | Run assignment for pending orders       |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧠 Order Assignment Logic
 
-## Deploy on Vercel
+1. Receives order details.
+2. Searches for delivery partners in the same area.
+3. Filters:
+   - Active status
+   - Load < 3
+4. Sorts by:
+   - Higher rating
+   - More completed orders
+5. Rejects top partner if they have too many cancelled orders.
+6. Assigns to best match and updates their load.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🧾 Pages
+
+- `/` – Dashboard with key metrics, active orders map, and partner status.
+- `/partners` – Partner list, add/edit forms, and stats.
+- `/orders` – View and filter orders.
+- `/assignments` – History of assignments and success metrics.
+
+---
+
+## ⚙️ How to Run Locally
+
+```bash
+git clone https://github.com/Ankit-xyz1/smartDeliveryManageMentSysytem.git
+cd smartDeliveryManageMentSysytem
+npm install
+npm run dev
+```
+
+Set up your `.env.local` with MongoDB credentials:
+
+```
+MONGODB_URI=your_mongodb_connection_string
+```
+
+---
+
+## 🚀 Deployment
+
+Deployed on [Vercel](https://vercel.com), connected with GitHub for auto CI/CD.  
+Live Link: [smart-delivery-management-system.vercel.app](https://smart-delivery-manage-ment-sysytem.vercel.app)
+
+---
+
+## 📄 License
+
+MIT License
