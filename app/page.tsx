@@ -265,12 +265,3 @@ export default function Home() {
     </>
   );
 }
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='hidden md:flex h-full w-[1px] bg-zinc-800'></div>
-      </div>
-    </>
-  );
-}
