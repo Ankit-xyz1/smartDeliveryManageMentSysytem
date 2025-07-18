@@ -113,69 +113,158 @@ export default function Home() {
   }
   return (
     <>
-      <div className='main h-screen md:w-[100%] w-full bg-zinc-950 flex items-center justify-center'>
+      <div className='main min-h-screen w-full bg-zinc-950 pt-4'>
         <Toaster />
-        <div className='hidden md:flex h-screen w-[1px] bg-zinc-800'></div>
-        <div className='main h-screen md:w-[60%] w-full bg-zinc-950 flex flex-wrap p-4'>
-          <div className="w-[100%] h-full md:w-[50%]  p-2 flex flex-col">
-            <div className="metricsCar w-full h-[46%]  flex flex-col gap-2">
-              <div className="heading w-full h-[5vh] text-white p-2 flex gap-1 items-center justify-around bg-zinc-900 rounded-sm">
-                <div className="flex items-center gap-1">
-                  <div className="rounded-full h-[6px] w-[6px] bg-green-500 animate-pulse duration-500">
-                  </div><User size={20} />Free partners {activepartners.length}
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6'>
+            {/* Free Partners Section */}
+            <div className="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 overflow-hidden">
+              <div className="bg-gradient-to-r from-zinc-800 to-zinc-900 px-6 py-4 border-b border-zinc-800">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="rounded-full h-3 w-3 bg-green-500 animate-pulse shadow-lg shadow-green-500/30"></div>
+                      <User size={20} className="text-green-400" />
+                      <span className="text-white font-semibold">Free Partners</span>
+                      <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                        {activepartners.length}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-orange-400">
+                    <div className="rounded-full h-3 w-3 bg-orange-500 animate-pulse shadow-lg shadow-orange-500/30"></div>
+                    <span className="text-sm font-medium">Busy: {partners.length - activepartners.length}</span>
+                  </div>
                 </div>
-                <div className="busy ml-1.5 flex items-center gap-1">
-                  <div className="rounded-full h-[6px] w-[6px] bg-orange-500 animate-pulse duration-500"></div>
-                  Busy Partners {partners.length - activepartners.length}
-                </div>
-
               </div>
-              <div className="h-[80%] w-full  overflow-auto p-2 flex flex-col gap-0.5">
+              <div className="p-4 max-h-80 overflow-y-auto">
                 {activepartners && <>
                   {activepartners.map((item, index) => (
-                    <div key={index} className="indi bg-zinc-800 p-1 rounded text-white flex gap-0.5"><span className="flex w-[50%] overflow-hidden"><User size={20} /> {item.name}</span> <span className="ml-4 bg-zinc-700 px-2 rounded-xl">currentLoad:{item.currentLoad}</span></div>
+                    <div key={index} className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg mb-2 hover:bg-zinc-700 transition-colors border border-zinc-700">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                          <User size={14} className="text-white" />
+                        </div>
+                        <span className="text-white font-medium truncate">{item.name}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="bg-zinc-700 text-gray-300 px-3 py-1 rounded-full text-xs font-medium">
+                          Load: {item.currentLoad}/3
+                        </span>
+                      </div>
+                    </div>
                   ))}
                 </>}
+                {activepartners.length === 0 && (
+                  <div className="text-center py-8 text-gray-400">
+                    <User size={48} className="mx-auto mb-3 opacity-50" />
+                    <p>No free partners available</p>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="w-full h-[1px] bg-zinc-600 mb-2"></div>
-            <div className="activeOrders metricsCar w-full h-[46%]  ">
-              <div className="heading w-full h-[5vh] text-white p-2 flex gap-1 items-center justify-around bg-zinc-900 rounded-sm">
-                <div className="flex items-center gap-1">
-                  <div className="rounded-full h-[6px] w-[6px] bg-green-500 animate-pulse duration-500">
-                  </div><Box size={20} /> active Orders {activeOrder.length}
+
+            {/* Active Orders Section */}
+            <div className="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 overflow-hidden">
+              <div className="bg-gradient-to-r from-zinc-800 to-zinc-900 px-6 py-4 border-b border-zinc-800">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-full h-3 w-3 bg-green-500 animate-pulse shadow-lg shadow-green-500/30"></div>
+                  <Box size={20} className="text-green-400" />
+                  <span className="text-white font-semibold">Active Orders</span>
+                  <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                    {activeOrder.length}
+                  </span>
                 </div>
-
-
               </div>
-              <div className="h-[80%] w-full  overflow-auto p-2 flex flex-col gap-0.5">
+              <div className="p-4 max-h-80 overflow-y-auto">
                 {activeOrder && <>
                   {activeOrder.map((item, index) => (
-                    <div key={index} className="indi bg-zinc-800 p-1 rounded text-white flex gap-0.5"><span className="w-[50%] flex gap-1 overflow-hidden"><Box size={20} /> {item.orderNumber} </span> <span className="ml-4 bg-zinc-700 px-2 rounded-xl">Area :{item.area}</span></div>
+                    <div key={index} className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg mb-2 hover:bg-zinc-700 transition-colors border border-zinc-700">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center">
+                          <Box size={14} className="text-white" />
+                        </div>
+                        <span className="text-white font-medium truncate">{item.orderNumber}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="bg-zinc-700 text-gray-300 px-3 py-1 rounded-full text-xs font-medium">
+                          {item.area}
+                        </span>
+                      </div>
+                    </div>
                   ))}
                 </>}
+                {activeOrder.length === 0 && (
+                  <div className="text-center py-8 text-gray-400">
+                    <Box size={48} className="mx-auto mb-3 opacity-50" />
+                    <p>No active orders</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          {/* recent assignments */}
-          <div className="w-[100%] h-full md:w-[50%] p-3">
-            <div className="recentAssignments  h-full w-full">
-              <div className="heading w-full h-[5vh] text-white p-2 flex gap-1 items-center justify-around bg-zinc-900 rounded-sm">
-                <div className="flex items-center gap-1">
-                  <div className="rounded-full h-[6px] w-[6px] bg-green-500 animate-pulse duration-500">
-                  </div> <FileClock size={20} />Recent assignments
-                </div>
 
+          {/* Recent Assignments Section */}
+          <div className="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 overflow-hidden">
+            <div className="bg-gradient-to-r from-zinc-800 to-zinc-900 px-6 py-4 border-b border-zinc-800">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-full h-3 w-3 bg-blue-500 animate-pulse shadow-lg shadow-blue-500/30"></div>
+                  <FileClock size={20} className="text-blue-400" />
+                  <span className="text-white font-semibold">Recent Assignments</span>
+                  <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                    {assignments.length}
+                  </span>
+                </div>
+                <Button 
+                  onClick={RunAssignMents} 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50" 
+                  disabled={loading}
+                >
+                  {loading && <Loader className="animate-spin mr-2" size={16} />}
+                  {loading ? 'Running...' : 'Run Assignment'}
+                </Button>
               </div>
-              <div className="h-[80%]  w-full  overflow-auto p-2 flex flex-col gap-0.5">
+            </div>
+            <div className="p-4 max-h-96 overflow-y-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {assignments && <>
                   {assignments.map((item, index) => (
-                    <div key={index} className="indi bg-zinc-800 p-1 rounded text-white flex gap-0.5"><span className="w-[50%] overflow-hidden flex gap-2"><Blocks size={20} /> {(item._id).substr(7, 5)}....</span> <span className="ml-4 bg-zinc-700 px-2 rounded-xl">Status:{" "+item.status}</span></div>
+                    <div key={index} className="p-3 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors border border-zinc-700">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
+                          <Blocks size={14} className="text-white" />
+                        </div>
+                        <span className="text-white font-mono text-sm truncate">
+                          {(item._id).substr(0, 8)}...
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          item.status === 'assigned' 
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                            : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                        }`}>
+                          {item.status}
+                        </span>
+                      </div>
+                    </div>
                   ))}
                 </>}
               </div>
-              <div className="w-full h-[8vh]  flex items-center justify-center">
-                <Button onClick={RunAssignMents} className="cursor-pointer" variant={"outline"}>{loading && <Loader className="animate-spin" size={20} />}Run AssignMent</Button>
+              {assignments.length === 0 && (
+                <div className="text-center py-8 text-gray-400">
+                  <FileClock size={48} className="mx-auto mb-3 opacity-50" />
+                  <p>No recent assignments</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
               </div>
             </div>
           </div>

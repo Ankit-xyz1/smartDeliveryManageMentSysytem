@@ -150,88 +150,268 @@ const page = () => {
   return (
     <>
       <Toaster />
-      <div className='main1 h-screen md:w-[100%] w-full bg-zinc-950 flex items-center justify-center relative'>
-        <div className='line animate-pulse duration-500 hidden md:flex h-screen w-[1px] bg-zinc-800'></div>
-        <div className='main2 h-screen md:w-[60%] w-full bg-zinc-950 p-5'>
-          <div className="Heading-section create flex h-fit w-full justify-between items-center">
-            <div className='text-white text-xl rounded-2xl flex gap-1 justify-center items-center'><Logs />Partner List</div>
-            <Button variant={'outline'} className='cursor-pointer' onClick={() => setpartnerRegistrationPage(true)}><Plus />Create an partner</Button>
-            {partnerRegistrationPage && <>
-              <div className='h-screen w-full bg-zinc-950 absolute left-0 bottom-0 flex items-center justify-center z-10 '>
-                <div className='lines animate-pulse duration-500  hidden md:flex h-screen w-[1px] bg-zinc-800'></div>
-                <div className='h-screen md:w-[60%] w-full bg-zinc-950 p-5 relative  flex flex-col'>
-                  <div className="absolute right-2 top-2 h-fit w-fit text-xl text-white"><Button className='cursor-pointer' onClick={() => setpartnerRegistrationPage(false)}><X /></Button></div>
-                  <div className="input  w-full h-[80vh] p-4 flex flex-col items-center gap-2 justify-center">
-                    <Input value={formData.name} name='name' onChange={handleChange} type='text' placeholder='Deivery partner name' className=' w-[90%] md:w-[200px] text-white' />
-                    <Input value={formData.email} name='email' onChange={handleChange} type='text' placeholder='Deivery partner email' className=' w-[90%] md:w-[200px] text-white' />
-                    <Input value={formData.phone} name='phone' onChange={handleChange} type='text' placeholder='Deivery partner phone' className=' w-[90%] md:w-[200px] text-white' />
-                    <Input value={formData.shiftFrom} name='shiftFrom' onChange={handleChange} type='text' placeholder='Enter shift from time' className=' w-[90%] md:w-[200px] text-white' />
-                    <Input value={formData.shiftTo} name='shiftTo' onChange={handleChange} type='text' placeholder='Enter shift to time' className=' w-[90%] md:w-[200px] text-white' />
-                    <div className='h-fit w-full flex gap-2 items-center justify-center ml:[10px] md:ml-[88px]'>
-                      <Input value={areaValue} onChange={handlAreaChnage} type='text' placeholder='Deivery partner area' className=' w-[90%] md:w-[200px] text-white' />
-                      <Button className='cursor-pointer' onClick={() => addArea()}><Plus /> Add area</Button>
-                    </div>
-                    {areaArr.length > 0 && <>
-                      <div className="arealist w-fit h-[15vh] md:w-[400px] rounded text-white bg-zinc-800 overflow-auto p-4">
-                        <h1 className='text-sm text-purple-500 p-1'>area List</h1>
-                        {areaArr.map((item, index) => (<span key={index}>
-                          <Button className='cursor-pointer text-xs' onClick={() => removeAreaFromArr(index)}> {item} <Minus size={10} /></Button>
-                        </span>))}
-                      </div>
-                    </>}
-
-                    <Button className='cursor-pointer text-xs' onClick={registerPartner}>
-                      {loading ? <span><Loader size={20} className='animate-spin' /></span> : <Plus />}
-                      Add partner
-                    </Button>
-                  </div>
+      <div className='min-h-screen w-full bg-zinc-950 relative'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6'>
+          {/* Header Section */}
+          <div className="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 p-6 mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className='flex items-center gap-3'>
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Logs size={20} className="text-white" />
                 </div>
-                <div className='lines animate-pulse duration-500 hidden md:flex h-screen w-[1px] bg-zinc-800'></div>
-
+                <div>
+                  <h1 className='text-white text-2xl font-bold'>Partner Management</h1>
+                  <p className='text-gray-400 text-sm mt-1'>Manage delivery partners and their assignments</p>
+                </div>
               </div>
-            </>}
-          </div>
-          <div className="metrics w-full h-[5vh] flex gap-2 items-center justify-start ">
-            <div className="active1 h-full w-[40%] flex items-center justify-center ">
-              <div className="status w-full flex gap-1 justify-start items-center">
-                <div className="blinker animate-pulse duration-1000 h-[7px] w-[7px] bg-green-500 rounded-full"></div>
-                <div className="stat-written text-white text-sm h-full w-fit flex">{partner.length} availabe partners</div>
+              <Button 
+                variant={'default'} 
+                className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200' 
+                onClick={() => setpartnerRegistrationPage(true)}
+              >
+                <Plus size={16} className="mr-2" />
+                Add Partner
+              </Button>
+            </div>
+            
+            {/* Metrics */}
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-zinc-800 rounded-lg p-4 border border-zinc-700">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full h-3 w-3 bg-green-500 animate-pulse shadow-lg shadow-green-500/30"></div>
+                  <span className="text-gray-300 text-sm font-medium">Total Partners</span>
+                </div>
+                <p className="text-white text-2xl font-bold mt-2">{partner.length}</p>
+              </div>
+              <div className="bg-zinc-800 rounded-lg p-4 border border-zinc-700">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full h-3 w-3 bg-blue-500 animate-pulse shadow-lg shadow-blue-500/30"></div>
+                  <span className="text-gray-300 text-sm font-medium">Active Partners</span>
+                </div>
+                <p className="text-white text-2xl font-bold mt-2">
+                  {partner.filter(p => p.status === 'active').length}
+                </p>
+              </div>
+              <div className="bg-zinc-800 rounded-lg p-4 border border-zinc-700">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-full h-3 w-3 bg-orange-500 animate-pulse shadow-lg shadow-orange-500/30"></div>
+                  <span className="text-gray-300 text-sm font-medium">Available Now</span>
+                </div>
+                <p className="text-white text-2xl font-bold mt-2">
+                  {partner.filter(p => p.status === 'active' && p.currentLoad < 3).length}
+                </p>
               </div>
             </div>
           </div>
-          <div className='partners-list-box h-[90vh] w-full p-4 overflow-auto flex flex-col gap-2'>
-            {partner.length > 0 && <>
-              {partner.map((item: DeliveryPartnerTypeFromDb, index) => (
-                <div key={index} className="IndiVidualPartner w-[100%] h-[6vh] bg-zinc-900 rounded-sm flex p-2">
-                  <div className="individualname w-[50%] md:w-[30%] text-white h-full flex items-center justify-start px-1 md:text-sm text-[12px] overflow-hidden">{item.name}</div>
-                  <div className="status w-[10%] md:w-[20%] flex gap-1 justify-start items-center">
-                    <div className={`blinker animate-pulse duration-1000 h-[7px] w-[7px] ${item.status === 'active' ? "bg-green-500" : "bg-red-500"}  rounded-full shadow-2xl`}></div>
-                    <div className="stat-written hidden md:flex text-white text-sm">{item.status === 'active' ? "Active" : "Un Active"}</div>
-                  </div>
-                  <div className='edit-delete md:w-[47%] w-[35%] flex items-center justify-end gap-2 text-black'>
-                    <div><Link href={`/partners/${item._id}`}>
-                      <Button variant={'outline'} className='cursor-pointer'><UserPen /><span className='md:inline hidden'>edit</span></Button>
-                    </Link>
+
+          {/* Partners List */}
+          <div className="bg-zinc-900 rounded-xl shadow-xl border border-zinc-800 overflow-hidden">
+            <div className="bg-gradient-to-r from-zinc-800 to-zinc-900 px-6 py-4 border-b border-zinc-800">
+              <h2 className="text-white text-lg font-semibold">Partners List</h2>
+            </div>
+            <div className='p-6'>
+              <div className='grid gap-4'>
+                {partner.length > 0 ? (
+                  partner.map((item: DeliveryPartnerTypeFromDb, index) => (
+                    <div key={index} className="bg-zinc-800 rounded-lg p-4 hover:bg-zinc-700 transition-all duration-200 border border-zinc-700 hover:border-zinc-600 shadow-lg">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-4 flex-1 min-w-0">
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-white font-bold text-lg">
+                              {item.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-white font-semibold text-lg truncate">{item.name}</h3>
+                            <p className="text-gray-400 text-sm truncate">{item.email}</p>
+                            <div className="flex items-center gap-2 mt-2">
+                              <div className={`rounded-full h-2 w-2 ${item.status === 'active' ? "bg-green-500" : "bg-red-500"} animate-pulse shadow-lg`}></div>
+                              <span className={`text-sm font-medium ${item.status === 'active' ? "text-green-400" : "text-red-400"}`}>
+                                {item.status === 'active' ? "Active" : "Inactive"}
+                              </span>
+                              <span className="text-gray-400 text-sm">•</span>
+                              <span className="text-gray-400 text-sm">Load: {item.currentLoad || 0}/3</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='flex items-center gap-3'>
+                          <Link href={`/partners/${item._id}`}>
+                            <Button 
+                              variant={'outline'} 
+                              className='bg-zinc-700 hover:bg-zinc-600 border-zinc-600 text-white px-4 py-2 rounded-lg transition-all duration-200'
+                            >
+                              <UserPen size={16} className="mr-2" />
+                              <span className='hidden sm:inline'>Edit</span>
+                            </Button>
+                          </Link>
+                          <Button 
+                            variant={'outline'} 
+                            className='bg-red-600/20 hover:bg-red-600/30 border-red-600/50 text-red-400 hover:text-red-300 px-4 py-2 rounded-lg transition-all duration-200' 
+                            onClick={() => DeletePartner(item._id)}
+                          >
+                            <Trash2 size={16} className="mr-2" />
+                            <span className='hidden sm:inline'>Delete</span>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="delete"><Button variant={'outline'} className='cursor-pointer' onClick={() => DeletePartner(item._id)}><Trash2 /><span className='md:inline hidden'>Delete</span></Button></div>
+                  ))
+                ) : (
+                  <div className="text-center py-12 text-gray-400">
+                    <Logs size={64} className="mx-auto mb-4 opacity-50" />
+                    <h3 className="text-xl font-semibold mb-2">No Partners Found</h3>
+                    <p className="text-gray-500">Get started by adding your first delivery partner</p>
                   </div>
-                </div>
-              ))}
-            </>}
-            <div className="IndiVidualPartner w-[100%] h-[6vh] bg-zinc-900 rounded-sm flex p-2">
-              <div className="individualname w-[50%] md:w-[30%] text-white h-full flex items-center justify-start px-1 md:text-sm text-[12px] overflow-hidden">Partner Name</div>
-              <div className="status w-[10%] md:w-[20%] flex gap-1 justify-start items-center">
-                <div className="blinker animate-pulse duration-1000 h-[7px] w-[7px] bg-red-500 rounded-full shadow-2xl"></div>
-                <div className="stat-written hidden md:flex text-white text-sm"> unActive</div>
-              </div>
-              <div className='edit-delete md:w-[47%] w-[35%] flex items-center justify-end gap-2 text-black'>
-                <div><Button variant={'outline'} className='cursor-pointer'><UserPen /><span className='md:inline hidden'>edit</span></Button></div>
-                <div className="delete"><Button variant={'outline'} className='cursor-pointer'><Trash2 /><span className='md:inline hidden'>Delete</span></Button></div>
+                )}
               </div>
             </div>
           </div>
         </div>
-        <div className='line animate-pulse duration-500 hidden md:flex h-screen w-[1px] bg-zinc-800'></div>
+
+        {/* Registration Modal */}
+            {partnerRegistrationPage && <>
+              <div className='fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
+                <div className='bg-zinc-900 rounded-xl shadow-2xl border border-zinc-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto'>
+                  <div className="bg-gradient-to-r from-zinc-800 to-zinc-900 px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
+                    <h2 className="text-white text-xl font-semibold">Add New Partner</h2>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className='text-gray-400 hover:text-white hover:bg-zinc-800 rounded-lg' 
+                      onClick={() => setpartnerRegistrationPage(false)}
+                    >
+                      <X size={20} />
+                    </Button>
+                  </div>
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Partner Name</label>
+                        <Input 
+                          value={formData.name} 
+                          name='name' 
+                          onChange={handleChange} 
+                          type='text' 
+                          placeholder='Enter partner name' 
+                          className='w-full bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20' 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+                        <Input 
+                          value={formData.email} 
+                          name='email' 
+                          onChange={handleChange} 
+                          type='email' 
+                          placeholder='Enter email address' 
+                          className='w-full bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20' 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
+                        <Input 
+                          value={formData.phone} 
+                          name='phone' 
+                          onChange={handleChange} 
+                          type='tel' 
+                          placeholder='Enter phone number' 
+                          className='w-full bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20' 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Shift Start</label>
+                        <Input 
+                          value={formData.shiftFrom} 
+                          name='shiftFrom' 
+                          onChange={handleChange} 
+                          type='time' 
+                          placeholder='09:00' 
+                          className='w-full bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20' 
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Shift End</label>
+                        <Input 
+                          value={formData.shiftTo} 
+                          name='shiftTo' 
+                          onChange={handleChange} 
+                          type='time' 
+                          placeholder='17:00' 
+                          className='w-full bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20' 
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="mb-6">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Service Areas</label>
+                      <div className='flex gap-2 mb-3'>
+                        <Input 
+                          value={areaValue} 
+                          onChange={handlAreaChnage} 
+                          type='text' 
+                          placeholder='Enter service area' 
+                          className='flex-1 bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20' 
+                        />
+                        <Button 
+                          type="button"
+                          className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200' 
+                          onClick={() => addArea()}
+                        >
+                          <Plus size={16} />
+                        </Button>
+                      </div>
+                      {areaArr.length > 0 && (
+                        <div className="bg-zinc-800 rounded-lg p-4 border border-zinc-700">
+                          <h3 className='text-sm font-medium text-purple-400 mb-3'>Service Areas ({areaArr.length})</h3>
+                          <div className="flex flex-wrap gap-2">
+                            {areaArr.map((item, index) => (
+                              <span key={index} className="inline-flex items-center gap-2 bg-zinc-700 text-white px-3 py-1 rounded-full text-sm border border-zinc-600">
+                                {item}
+                                <button 
+                                  type="button"
+                                  onClick={() => removeAreaFromArr(index)}
+                                  className="text-red-400 hover:text-red-300 transition-colors"
+                                >
+                                  <Minus size={14} />
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex justify-end gap-3">
+                      <Button 
+                        variant="outline" 
+                        className='bg-zinc-800 border-zinc-700 text-gray-300 hover:bg-zinc-700 hover:text-white px-6 py-2 rounded-lg transition-all duration-200'
+                        onClick={() => setpartnerRegistrationPage(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        className='bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50' 
+                        onClick={registerPartner}
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <>
+                            <Loader size={16} className='animate-spin mr-2' />
+                            Adding...
+                          </>
+                        ) : (
+                          <>
+                            <Plus size={16} className="mr-2" />
+                            Add Partner
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>}
+        </div>
       </div>
     </>
   )
